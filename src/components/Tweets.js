@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
 import CreateTweet from './CreateTweet';
 
-
-
 class Tweets extends React.Component{
   constructor(props) {
     super(props);
@@ -18,7 +16,6 @@ class Tweets extends React.Component{
   }
   
   async componentDidMount() {
-    const {history} = this.props;
     const token = localStorage.getItem('twitter_clone_token');
 
     if(token){
@@ -29,6 +26,18 @@ class Tweets extends React.Component{
       });
     }
     
+    this.populateTweets();
+  }
+
+  async handleDeleteTweet(id){
+
+    await fetch(`http://localhost:3333/tweets/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'X-Auth-Token': localStorage.getItem('twitter_clone_token')
+      }
+    })
+
     this.populateTweets();
   }
 
@@ -45,7 +54,7 @@ class Tweets extends React.Component{
     }
   }
 
-
+  
 
   render() {
     let {tweets, payload, error, isLoading } = this.state;
@@ -68,19 +77,24 @@ class Tweets extends React.Component{
     }
 
     const tweetElements = tweets.map((tweet) => {
-    let date = tweet.created_at.split('').splice(0,10).join('');
+      let date = tweet.created_at.split('').splice(0,10).join('');
 
-    return (
-      <div className="tweet-card" key={tweet.id}>
-        <div className="tweet-card-info">
-          <img src={tweet.image} />
-          <p>{tweet.name} 
-          <Link to={`/tweets/${tweet.username}`}> @{tweet.username}</Link>
-          </p>
-          <p><small>| {date}</small></p>
+      return (
+        <div className="tweet-card" key={tweet.id}>
+          <div className="tweet-card-info">
+            <img src={tweet.image} />
+            <p>{tweet.name} 
+            <Link to={`/tweets/${tweet.username}`}> @{tweet.username}</Link>
+            </p>
+            <p><small>| {date}</small></p>
+          </div>
+          <p className="tweet-message">{tweet.message}</p>
+          {payload && payload.username === tweet.username && (
+          <button
+          className="delete-tweet-btn"
+          onClick={() => this.handleDeleteTweet(tweet.id)}
+          >Delete</button>)}
         </div>
-        <p className="tweet-message">{tweet.message}</p>
-      </div>
       )
     });
 
