@@ -3,10 +3,6 @@
   margin: 0;
 }
 
-body {
-  background: whitesmoke;
-}
-
 .App {
   text-align: center;
 }
@@ -36,22 +32,24 @@ header button {
 /* HOME */
 .content-container {
   width: 80%;
-  margin: 0 auto;
+  margin: 50px auto;
   position: relative;
 }
 .content-container .logout-btn {
   position: absolute;
-  top: -75px;
+  top: -105px;
   right: -80px;
   padding: 10px 15px;
-  opacity: 0.6;
+  opacity: 1;
   border-radius: 10px;
   border: 1px solid #1A9BEF;
   color: #1A9BEF;
   background: none;
+  cursor: pointer;
 }
 .content-container .logout-btn:hover {
-  opacity: 1;
+  background-color: #1A9BEF;
+  color: white;
 }
 .content-container h2 {
   font-size: 30px;
@@ -63,7 +61,6 @@ header button {
   padding: 20px;
   border-bottom: 1px solid #e6e6e6;
   text-align: left;
-  box-shadow: 0 2px 5px #e6e6e6;
   background-color: white;
   position: relative;
 }
@@ -100,6 +97,7 @@ header button {
   padding: 5px 10px;
   color: red;
   background: none;
+  cursor: pointer;
 }
 
 .tweet-input {

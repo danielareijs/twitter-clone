@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
 import CreateTweet from './CreateTweet';
+import Tweet from './Tweet';
 
 class Tweets extends React.Component{
   constructor(props) {
@@ -31,20 +32,20 @@ class Tweets extends React.Component{
 
   async handleDeleteTweet(id){
 
-    await fetch(`http://localhost:3333/tweets/${id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/tweets/${id}`, {
       method: 'DELETE',
       headers: {
-        'X-Auth-Token': localStorage.getItem('twitter_clone_token')
+        'x-auth-token': localStorage.getItem('twitter_clone_token')
       }
     })
 
     this.populateTweets();
-  }
+}
 
   populateTweets() {
     try {
       this.setState({ isLoading: true });
-      fetch('http://localhost:3333/tweets')
+      fetch(`${process.env.REACT_APP_API_URL}/tweets`)
       .then(res => res.json())
       .then(data => {
         this.setState({ tweets: data, isLoading: false});
@@ -80,6 +81,10 @@ class Tweets extends React.Component{
       let date = tweet.created_at.split('').splice(0,10).join('');
 
       return (
+        // <Tweet 
+        // tweet={tweet} 
+        // payload={payload} 
+        // populateTweets={() => this.populateTweets}/>
         <div className="tweet-card" key={tweet.id}>
           <div className="tweet-card-info">
             <img src={tweet.image} />

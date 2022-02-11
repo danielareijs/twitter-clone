@@ -8,6 +8,13 @@ import Logout from './components/Logout';
 import { HashRouter, Switch, Route } from "react-router-dom";
 
 class App extends React.Component {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      loggedIn: false
+    }
+  }
   render(){
 
     return (

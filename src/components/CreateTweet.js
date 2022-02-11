@@ -30,14 +30,12 @@ class CreateTweet extends React.Component{
             this.setState({error: "Can not post empy tweet"})
             return;
         }
-
-        const history = this.props.history;
         
-        await fetch('http://localhost:3333/tweets', {
+        await fetch(`${process.env.REACT_APP_API_URL}/tweets`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Auth-Token': localStorage.getItem('twitter_clone_token')
+                'x-auth-token': localStorage.getItem('twitter_clone_token')
 
             },
             body: JSON.stringify({message: this.state.tweetInput}),

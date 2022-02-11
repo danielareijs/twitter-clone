@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
+import Tweet from "./Tweet";
 
 
 class UserTweets extends React.Component{
@@ -32,11 +33,11 @@ class UserTweets extends React.Component{
         try {
             this.setState({ isLoading: true });
 
-            const tweets = await fetch(`http://localhost:3333/tweets/${username}`)
+            const tweets = await fetch(`${process.env.REACT_APP_API_URL}/${username}`)
             .then(res => res.json())
             .then(data => data);
 
-            const user = await fetch(`http://localhost:3333/users/${username}`)
+            const user = await fetch(`${process.env.REACT_APP_API_URL}/${username}`)
             .then(res => res.json())
             .then(data => data);
 
@@ -46,6 +47,18 @@ class UserTweets extends React.Component{
             this.setState({ error });
         }
       }
+
+      async handleDeleteTweet(id){
+
+        await fetch(`${process.env.REACT_APP_API_URL}/tweets/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'X-Auth-Token': localStorage.getItem('twitter_clone_token')
+          }
+        })
+
+        this.populateTweets();
+    }
 
     render(){
         let {tweets, user, error, isLoading, payload } = this.state;
@@ -70,6 +83,10 @@ class UserTweets extends React.Component{
       const tweetElements = tweets.map((tweet) => {
         let date = tweet.created_at.split('').splice(0,10).join('');
         return (
+            // <Tweet 
+            // tweet={tweet} 
+            // payload={payload} 
+            // populateTweets={() => this.populateTweets}/>
             <div className="tweet-card" key={tweet.id}>
                 <div className="tweet-card-info">
                     <img src={user.image} />
@@ -78,18 +95,23 @@ class UserTweets extends React.Component{
                     <p><small>| {date}</small></p>
                 </div>
                 <p className="tweet-message">{tweet.message}</p>
+                {payload && payload.username === tweet.username && (
+                <button
+                className="delete-tweet-btn"
+                onClick={() => this.handleDeleteTweet(tweet.id)}
+                >Delete</button>)}
             </div>
         )
     });
 
     return(
         <div className="content-container">
-             <h2 className="user-feed-heading">@{user.name}'s feed</h2>
             {!payload &&  <Link to={`/login`}><button className="logout-btn">Log in</button></Link>}
             {payload && <Link to={`/logout`}><button className="logout-btn">Log out</button></Link>}
-        
+
             <div className="user-container">
                 <div className="user-tweets">
+                <h2 className="user-feed-heading">@{user.name}'s feed</h2>
                     {tweets.length ? (
                     <ul className="tweets">{tweetElements}</ul>
                     ) : (
