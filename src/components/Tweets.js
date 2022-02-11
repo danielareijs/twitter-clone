@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
 import CreateTweet from './CreateTweet';
-import Tweet from './Tweet';
+// import Tweet from './Tweet';
 
 class Tweets extends React.Component{
   constructor(props) {

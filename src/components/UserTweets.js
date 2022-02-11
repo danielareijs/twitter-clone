@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
-import Tweet from "./Tweet";
+// import Tweet from "./Tweet";
 
 
 class UserTweets extends React.Component{
@@ -33,11 +33,11 @@ class UserTweets extends React.Component{
         try {
             this.setState({ isLoading: true });
 
-            const tweets = await fetch(`${process.env.REACT_APP_API_URL}/${username}`)
+            const tweets = await fetch(`${process.env.REACT_APP_API_URL}/tweets/${username}`)
             .then(res => res.json())
             .then(data => data);
 
-            const user = await fetch(`${process.env.REACT_APP_API_URL}/${username}`)
+            const user = await fetch(`${process.env.REACT_APP_API_URL}/users/${username}`)
             .then(res => res.json())
             .then(data => data);
 
